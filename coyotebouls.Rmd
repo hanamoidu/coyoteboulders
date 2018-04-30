@@ -1,0 +1,50 @@
+---
+title: "coyote_glm"
+output: github_document
+---
+
+
+```{r Data and Packages}
+library(tidyverse)
+?read.csv
+sept15 <- read.csv("15sept.csv", TRUE)
+oct16 <- read.csv("16oct.csv", TRUE)
+oct17 <- read.csv("17oct.csv", TRUE)
+yearswet <- read.csv("3yearwet.csv", TRUE)
+head(sept15)
+```
+
+```{r Add condition column}
+
+sept15$area_leng <- as.numeric(as.character(sept15$area_leng))
+oct16$area_leng <- as.numeric(as.character(oct16$area_leng))
+oct17$area_leng <- as.numeric(as.character(oct17$area_leng))
+
+sept15$cond <- ifelse(sept15$Condition=="Wet", 1, 0)
+oct16$cond <- ifelse(oct16$condition=="Wet", 1, 0)
+oct17$cond <- ifelse(oct17$condition=="Wet", 1, 0)
+
+```
+
+
+```{r GLM}
+sept15glm <- glm(cond ~ springpres + area_leng, data = sept15, family = binomial())
+summary(sept15glm)
+
+oct16glm <- glm(cond ~ springpres + area_leng, data = oct16, family = binomial())
+summary(oct16glm)
+
+oct17glm <- glm(cond ~ springpres + area_leng, data = oct17, family = binomial())
+summary(oct17glm)
+```
+
+```{r Testing Boulder~Reach Length}
+oct17thresh <- oct17 %>% filter(area_leng > 0.5)
+oct17test <- glm(cond ~ springpres + area_leng, data = oct17thresh, family = binomial())
+summary(oct17test)
+
+oct16thresh <- oct16 %>% filter(area_leng > 0.5)
+oct16test <- glm(cond ~ springpres + area_leng, data = oct16thresh, family = binomial())
+summary(oct16test)
+```
+

@@ -6,7 +6,6 @@ output: github_document
 
 ```{r Data and Packages}
 library(tidyverse)
-?read.csv
 sept15 <- read.csv("15sept.csv", TRUE)
 oct16 <- read.csv("16oct.csv", TRUE)
 oct17 <- read.csv("17oct.csv", TRUE)
